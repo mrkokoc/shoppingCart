@@ -90,31 +90,13 @@ function listCart() {
 }
 
 
-// saves Cart
+// saves cart
 function saveCart() {
     localStorage.setItem("shoppingCart", JSON.stringify(cart));
 }
 
 
-addItemToCart("Apple", 1.99, 5);
-addItemToCart("Banana", 0.99, 2);
-addItemToCart("Orange", 2.99, 10);
-addItemToCart("Tomato", 1.49, 3);
-addItemToCart("Apple", 1.99, 5);
-addItemToCart("Grape", 3.99, 1);
-addItemToCart("Peach", 0.49, 4);
-
-localStorage.setItem("username", "Joe");
-
-console.log(cart.length);
-console.log(countCart());
-console.log(totalCartCost());
-console.log(listCart(cart));
-
-
-saveCart();
-
-
-
-
-// loadCart
+// loads cart
+function loadCart() {
+    cart = JSON.parse(localStorage.getItem("shoppingCart"));
+}
