@@ -17,6 +17,7 @@ function addItemToCart(name, price, count) {
     }
     var item = new Item(name, price, count);
     cart.push(item);
+    saveCart();
 }
 
 
@@ -28,6 +29,7 @@ function removeItemFromCartAll(name) {
             break;
         }
     }
+    saveCart();
 }
 
 
@@ -42,12 +44,14 @@ function removeItemFromCart(name) {
             break;
         }
     }
+    saveCart();
 }
 
 
 // clear cart
 function clearCart() {
-    cart = []
+    cart = [];
+    saveCart();
 }
 
 
@@ -71,6 +75,27 @@ function totalCartCost(price) {
 }
 
 
+// list cart
+function listCart() {
+    var cartCopy = [];
+    for (var i in cart) {
+        var item = cart[i];
+        var itemCopy = {};
+        for (var p in item) {
+            itemCopy[p] = item[p];
+        }
+        cartCopy.push(itemCopy);
+    }
+    return cartCopy;
+}
+
+
+// saves Cart
+function saveCart() {
+    localStorage.setItem("shoppingCart", JSON.stringify(cart));
+}
+
+
 addItemToCart("Apple", 1.99, 5);
 addItemToCart("Banana", 0.99, 2);
 addItemToCart("Orange", 2.99, 10);
@@ -79,21 +104,17 @@ addItemToCart("Apple", 1.99, 5);
 addItemToCart("Grape", 3.99, 1);
 addItemToCart("Peach", 0.49, 4);
 
-console.log(cart.length);
-console.log(cart);
-
-removeItemFromCart("Apple");
+localStorage.setItem("username", "Joe");
 
 console.log(cart.length);
 console.log(countCart());
 console.log(totalCartCost());
+console.log(listCart(cart));
+
+
+saveCart();
 
 
 
-
-
-// listCart // array of Item
-
-// saveCart
 
 // loadCart
