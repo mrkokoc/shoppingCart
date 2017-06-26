@@ -4,6 +4,7 @@
     <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css">
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   </head>
   <style>
     h1 {
@@ -12,6 +13,21 @@
   </style>
 <body>
   <h1>Shopping cart</h1>
+  <div>
+    <ul>
+      <li><a class="add-to-cart" href="#" data-name="Apple" data-price="1.99">Apple $1.99</a></li>
+      <li><a class="add-to-cart" href="#" data-name="Banana" data-price="0.99">Banana $0.99</a></li>
+      <li><a class="add-to-cart" href="#" data-name="Orange" data-price="2.99">Orange $2.99</a></li>
+    </ul>
+    <button id="clear-cart">Clear Cart</button>
+  </div>
+
+  <div>
+    <ul id="show-cart">
+
+    </ul>
+  </div>
+
 </body>
   <script src="js/shopCart.js"></script>
 </html>
