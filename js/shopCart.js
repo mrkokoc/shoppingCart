@@ -5,6 +5,14 @@ $(".add-to-cart").click(function (event) {
 
     addItemToCart(name, price, 1);
     displayCart();
+    $("#total-items").text(countCart());
+    $("#total-price").text(totalCartCost());
+});
+
+$("#clear-cart").click(function (event) {
+    event.preventDefault();
+    clearCart();
+    displayCart();
 });
 
 // fills <ul id="show-cart">
@@ -35,6 +43,7 @@ function addItemToCart(name, price, count) {
     for (var i in cart) {
         if (cart[i].name === name) {
             cart[i].count += count;
+            saveCart();
             return;
         }
     }
@@ -89,12 +98,12 @@ function countCart() {
 
 
 // total cart cost
-function totalCartCost(price) {
+function totalCartCost() {
     var totalPrice = 0;
     for (var i in cart) {
-        totalPrice += cart[i].price
+        totalPrice += cart[i].price * cart[i].count;
     }
-    return totalPrice;
+    return totalPrice.toLocaleString();
 }
 
 
@@ -115,7 +124,7 @@ function listCart() {
 
 // saves cart
 function saveCart() {
-    localStorage.setItem("shoppingCart", JSON.stringify(cart));
+    localStorage.setItem("shoppingCart", JSON.stringify(listCart()));
 }
 
 
@@ -123,3 +132,5 @@ function saveCart() {
 function loadCart() {
     cart = JSON.parse(localStorage.getItem("shoppingCart"));
 }
+
+console.log(countCart());
