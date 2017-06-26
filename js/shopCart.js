@@ -13,12 +13,42 @@ $("#clear-cart").click(function (event) {
     displayCart();
 });
 
+$("#show-cart").on("click", ".btn-add-to-cart", function () {
+    var name = $(this).attr("data-name");
+    var price = Number($(this).attr("data-price"));
+    addItemToCart(name, price, 1);
+    displayCart();
+});
+
+$("#show-cart").on("click", ".btn-remove-item", function (event) {
+    var name = $(this).attr("data-name");
+    removeItemFromCart(name);
+    displayCart();
+});
+
+$("#show-cart").on("click", ".btn-delete-all", function (event) {
+    var name = $(this).attr("data-name");
+    removeItemFromCartAll(name);
+    displayCart();
+});
+
 // fills <ul id="show-cart">
 function displayCart() {
     var cartArray = listCart();
     var output = '';
     for (var i in cartArray) {
-        output += "<li>" + cartArray[i].name + " " + cartArray[i].count + "</li>";
+        output += "<li>"
+                + cartArray[i].name
+                + ": " + cartArray[i].count
+                + " x $"
+                + cartArray[i].price
+                + " = $"
+                + cartArray[i].total
+                + "<button class='btn-add-to-cart' data-name='" + cartArray[i].name + "' data-price='" + cartArray[i].price + "'>" +
+                "<i class='glyphicon glyphicon-plus'></i></button>"
+                + "<button class='btn-remove-item' data-name='" + cartArray[i].name + "'><i class='glyphicon glyphicon-minus'></i></button>"
+                + "<button class='btn-delete-all' data-name='" + cartArray[i].name + "'><i class='glyphicon glyphicon-remove'></i></button>"
+                + "</li>";
     }
     $("#show-cart").html(output);
     $("#total-items").text(countCart());
@@ -103,7 +133,7 @@ function totalCartCost() {
     for (var i in cart) {
         totalPrice += cart[i].price * cart[i].count;
     }
-    return totalPrice.toLocaleString();
+    return totalPrice.toFixed(2);
 }
 
 
@@ -116,6 +146,7 @@ function listCart() {
         for (var p in item) {
             itemCopy[p] = item[p];
         }
+        itemCopy.total = (item.price * item.count).toFixed(2);
         cartCopy.push(itemCopy);
     }
     return cartCopy;
@@ -134,3 +165,4 @@ function loadCart() {
 }
 
 loadCart();
+displayCart();
