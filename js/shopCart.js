@@ -5,8 +5,6 @@ $(".add-to-cart").click(function (event) {
 
     addItemToCart(name, price, 1);
     displayCart();
-    $("#total-items").text(countCart());
-    $("#total-price").text(totalCartCost());
 });
 
 $("#clear-cart").click(function (event) {
@@ -23,6 +21,8 @@ function displayCart() {
         output += "<li>" + cartArray[i].name + " " + cartArray[i].count + "</li>";
     }
     $("#show-cart").html(output);
+    $("#total-items").text(countCart());
+    $("#total-price").text(totalCartCost());
 }
 
 
@@ -133,4 +133,4 @@ function loadCart() {
     cart = JSON.parse(localStorage.getItem("shoppingCart"));
 }
 
-console.log(countCart());
+loadCart();
