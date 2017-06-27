@@ -47,7 +47,7 @@ shoppingCart.cart = [];
 
 // fills <ul id="show-cart">
 shoppingCart.displayCart = function () {
-    var cartArray = shoppingCart.listCart();
+    var cartArray = this.listCart();
     var output = '';
     for (var i in cartArray) {
         output += "<li>"
@@ -64,8 +64,8 @@ shoppingCart.displayCart = function () {
                 + "</li>";
     }
     $("#show-cart").html(output);
-    $("#total-items").text(shoppingCart.countCart());
-    $("#total-price").text(shoppingCart.totalCartCost());
+    $("#total-items").text(this.countCart());
+    $("#total-price").text(this.totalCartCost());
 };
 
 
@@ -79,58 +79,58 @@ shoppingCart.Item = function (name, price, count) {
 
 // adds item(s) in cart
 shoppingCart.addItemToCart = function (name, price, count) {
-    for (var i in shoppingCart.cart) {
-        if (shoppingCart.cart[i].name === name) {
-            shoppingCart.cart[i].count += count;
-            shoppingCart.saveCart();
+    for (var i in this.cart) {
+        if (this.cart[i].name === name) {
+            this.cart[i].count += count;
+            this.saveCart();
             return;
         }
     }
-    var item = new shoppingCart.Item(name, price, count);
-    shoppingCart.cart.push(item);
-    shoppingCart.saveCart();
+    var item = new this.Item(name, price, count);
+    this.cart.push(item);
+    this.saveCart();
 };
 
 
 // removes all by item name
 shoppingCart.removeItemFromCartAll = function (name) {
-    for (var i in shoppingCart.cart) {
-        if (shoppingCart.cart[i].name === name) {
-            shoppingCart.cart.splice(i, 1);
+    for (var i in this.cart) {
+        if (this.cart[i].name === name) {
+            this.cart.splice(i, 1);
             break;
         }
     }
-    shoppingCart.saveCart();
+    this.saveCart();
 };
 
 
 // removes one item from cart
 shoppingCart.removeItemFromCart = function (name) {
-    for (var i in shoppingCart.cart) {
-        if (shoppingCart.cart[i].name === name) {
-            shoppingCart.cart[i].count--;
-            if (shoppingCart.cart[i].count === 0) {
-                shoppingCart.cart.splice(i, 1);
+    for (var i in this.cart) {
+        if (this.cart[i].name === name) {
+            this.cart[i].count--;
+            if (this.cart[i].count === 0) {
+                this.cart.splice(i, 1);
             }
             break;
         }
     }
-    shoppingCart.saveCart();
+    this.saveCart();
 };
 
 
 // clear cart
 shoppingCart.clearCart = function () {
-    shoppingCart.cart = [];
-    shoppingCart.saveCart();
+    this.cart = [];
+    this.saveCart();
 };
 
 
 // count cart items
 shoppingCart.countCart = function () {
     var totalCount = 0;
-    for (var i in shoppingCart.cart) {
-        totalCount += shoppingCart.cart[i].count;
+    for (var i in this.cart) {
+        totalCount += this.cart[i].count;
     }
     return totalCount;
 };
@@ -139,8 +139,8 @@ shoppingCart.countCart = function () {
 // total cart cost
 shoppingCart.totalCartCost = function () {
     var totalPrice = 0;
-    for (var i in shoppingCart.cart) {
-        totalPrice += shoppingCart.cart[i].price * shoppingCart.cart[i].count;
+    for (var i in this.cart) {
+        totalPrice += this.cart[i].price * this.cart[i].count;
     }
     return totalPrice.toFixed(2);
 };
@@ -149,8 +149,8 @@ shoppingCart.totalCartCost = function () {
 // list cart
 shoppingCart.listCart = function () {
     var cartCopy = [];
-    for (var i in shoppingCart.cart) {
-        var item = shoppingCart.cart[i];
+    for (var i in this.cart) {
+        var item = this.cart[i];
         var itemCopy = {};
         for (var p in item) {
             itemCopy[p] = item[p];
@@ -164,13 +164,13 @@ shoppingCart.listCart = function () {
 
 // saves cart
 shoppingCart.saveCart = function () {
-    localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart.listCart()));
+    localStorage.setItem("shoppingCart", JSON.stringify(this.listCart()));
 };
 
 
 // loads cart
 shoppingCart.loadCart = function () {
-    shoppingCart.cart = JSON.parse(localStorage.getItem("shoppingCart"));
+    this.cart = JSON.parse(localStorage.getItem("shoppingCart"));
 };
 
 shoppingCart.loadCart();
