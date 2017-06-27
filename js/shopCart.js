@@ -38,7 +38,7 @@ $("#show-cart").on("click", ".btn-delete-all", function (event) {
 
 $("#show-cart").on("change", ".item-count", function (event) {
     var name = $(this).attr("data-name");
-    var count = $(this).val("value");
+    var count = Number($(this).val());
     shoppingCart.setCountForItem(name, count);
     shoppingCart.displayCart();
 });
@@ -59,7 +59,7 @@ shoppingCart.displayCart = function () {
     for (var i in cartArray) {
         if (cartArray.hasOwnProperty(i)) {
             output += "<li>"
-                    + cartArray[i].name
+                    + cartArray[i].name + " "
                     + "<input class='item-count' type='number' data-name='" + cartArray[i].name + "' value='" + cartArray[i].count + "'>"
                     + " x $" + cartArray[i].price
                     + " = $" + cartArray[i].total
@@ -100,13 +100,17 @@ shoppingCart.addItemToCart = function (name, price, count) {
     this.saveCart();
 };
 
-
+// adds count from input
 shoppingCart.setCountForItem = function (name, count) {
     for (var i in this.cart) {
         if (this.cart.hasOwnProperty(i)) {
             if (this.cart[i].name === name) {
-                this.cart[i].count = count;
-                break;
+                if (count > 0) {
+                    this.cart[i].count = count;
+                    break;
+                } if (count === 0) {
+                    shoppingCart.removeItemFromCartAll(name);
+                }
             }
         }
     }
@@ -169,10 +173,10 @@ shoppingCart.totalCartCost = function () {
     var totalPrice = 0;
     for (var i in this.cart) {
         if (this.cart.hasOwnProperty(i)) {
-            totalPrice += (this.cart[i].price * this.cart[i].count).toFixed(2);
+            totalPrice += this.cart[i].price * this.cart[i].count;
         }
     }
-    return totalPrice;
+    return totalPrice.toFixed(2);
 };
 
 
