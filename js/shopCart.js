@@ -50,18 +50,20 @@ shoppingCart.displayCart = function () {
     var cartArray = this.listCart();
     var output = '';
     for (var i in cartArray) {
-        output += "<li>"
-                + cartArray[i].name
-                + ": " + cartArray[i].count
-                + " x $"
-                + cartArray[i].price
-                + " = $"
-                + cartArray[i].total
-                + "<button class='btn-add-to-cart' data-name='" + cartArray[i].name + "' data-price='" + cartArray[i].price + "'>" +
-                "<i class='glyphicon glyphicon-plus'></i></button>"
-                + "<button class='btn-remove-item' data-name='" + cartArray[i].name + "'><i class='glyphicon glyphicon-minus'></i></button>"
-                + "<button class='btn-delete-all' data-name='" + cartArray[i].name + "'><i class='glyphicon glyphicon-remove'></i></button>"
-                + "</li>";
+        if (cartArray.hasOwnProperty(i)) {
+            output += "<li>"
+                    + cartArray[i].name
+                    + ": " + cartArray[i].count
+                    + " x $"
+                    + cartArray[i].price
+                    + " = $"
+                    + cartArray[i].total
+                    + "<button class='btn-add-to-cart' data-name='" + cartArray[i].name + "' data-price='" + cartArray[i].price + "'>" +
+                    "<i class='glyphicon glyphicon-plus'></i></button>"
+                    + "<button class='btn-remove-item' data-name='" + cartArray[i].name + "'><i class='glyphicon glyphicon-minus'></i></button>"
+                    + "<button class='btn-delete-all' data-name='" + cartArray[i].name + "'><i class='glyphicon glyphicon-remove'></i></button>"
+                    + "</li>";
+        }
     }
     $("#show-cart").html(output);
     $("#total-items").text(this.countCart());
@@ -80,10 +82,12 @@ shoppingCart.Item = function (name, price, count) {
 // adds item(s) in cart
 shoppingCart.addItemToCart = function (name, price, count) {
     for (var i in this.cart) {
-        if (this.cart[i].name === name) {
-            this.cart[i].count += count;
-            this.saveCart();
-            return;
+        if (this.cart.hasOwnProperty(i)) {
+            if (this.cart[i].name === name) {
+                this.cart[i].count += count;
+                this.saveCart();
+                return;
+            }
         }
     }
     var item = new this.Item(name, price, count);
@@ -95,9 +99,11 @@ shoppingCart.addItemToCart = function (name, price, count) {
 // removes all by item name
 shoppingCart.removeItemFromCartAll = function (name) {
     for (var i in this.cart) {
-        if (this.cart[i].name === name) {
-            this.cart.splice(i, 1);
-            break;
+        if (this.cart.hasOwnProperty(i)) {
+            if (this.cart[i].name === name) {
+                this.cart.splice(i, 1);
+                break;
+            }
         }
     }
     this.saveCart();
@@ -107,12 +113,14 @@ shoppingCart.removeItemFromCartAll = function (name) {
 // removes one item from cart
 shoppingCart.removeItemFromCart = function (name) {
     for (var i in this.cart) {
-        if (this.cart[i].name === name) {
-            this.cart[i].count--;
-            if (this.cart[i].count === 0) {
-                this.cart.splice(i, 1);
+        if (this.cart.hasOwnProperty(i)) {
+            if (this.cart[i].name === name) {
+                this.cart[i].count--;
+                if (this.cart[i].count === 0) {
+                    this.cart.splice(i, 1);
+                }
+                break;
             }
-            break;
         }
     }
     this.saveCart();
@@ -130,7 +138,9 @@ shoppingCart.clearCart = function () {
 shoppingCart.countCart = function () {
     var totalCount = 0;
     for (var i in this.cart) {
-        totalCount += this.cart[i].count;
+        if (this.cart.hasOwnProperty(i)) {
+            totalCount += this.cart[i].count;
+        }
     }
     return totalCount;
 };
@@ -140,7 +150,9 @@ shoppingCart.countCart = function () {
 shoppingCart.totalCartCost = function () {
     var totalPrice = 0;
     for (var i in this.cart) {
-        totalPrice += this.cart[i].price * this.cart[i].count;
+        if (this.cart.hasOwnProperty(i)) {
+            totalPrice += this.cart[i].price * this.cart[i].count;
+        }
     }
     return totalPrice.toFixed(2);
 };
@@ -150,10 +162,14 @@ shoppingCart.totalCartCost = function () {
 shoppingCart.listCart = function () {
     var cartCopy = [];
     for (var i in this.cart) {
-        var item = this.cart[i];
-        var itemCopy = {};
-        for (var p in item) {
-            itemCopy[p] = item[p];
+        if (this.cart.hasOwnProperty(i)) {
+            var item = this.cart[i];
+            var itemCopy = {};
+            for (var p in item) {
+                if (item.hasOwnProperty(p)) {
+                    itemCopy[p] = item[p];
+                }
+            }
         }
         itemCopy.total = (item.price * item.count).toFixed(2);
         cartCopy.push(itemCopy);
